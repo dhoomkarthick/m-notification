@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getMessaging, getToken } from "firebase/messaging";
+import axios from 'axios';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -32,6 +33,7 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const messaging = getMessaging(app);
 
+
 export const generateToken = async () => {
     const permission = await Notification.requestPermission();
     console.log(permission);
@@ -41,5 +43,13 @@ export const generateToken = async () => {
             
         });
         console.log(token);
+        debugger;
+         await axios.post('https://192.168.1.6:44325/api/Notification/register-device', {
+    userId: 1,
+    fcmToken: token,
+    deviceType: "android",//getDeviceType(), // "android" | "ios" | "web"
+    deviceModel: navigator.userAgent,
+    
+  });
     }
 }// vapidKey: "BMTxVce7i_LXah68LKKAtVHJPi-5EBC-OjSllDpppJ_gviXnXR2C41RBt5rNLa9JWzBvVEC-BS3JM4shpf9UzME"
